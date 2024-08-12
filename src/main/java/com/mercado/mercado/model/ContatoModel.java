@@ -1,45 +1,33 @@
 package com.mercado.mercado.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
-import org.springframework.format.datetime.DateFormatter;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
-@Entity
+@Entity(name = "ContatoModels")
 @Table(name = "contato", schema = "sysmercado")
-public class ContatoModel {
-	public static void main(String[] args) {
+public class ContatoModel  {
+	public static void main(String[] args) throws Exception {
 		ContatoModel contato = new ContatoModel();
-		SimpleDateFormat sdf = new SimpleDateFormat("24/04/1998");
-		contato.setEmail("Eduardofreitasfr@gmail.com");
-		contato.setMensagem("Bem vindo");
-		Calendar cal = Calendar.getInstance();
-		cal.getTime();
-		contato.setData(cal.getTime());
-		System.out.println("Email: " +contato.getEmail());
-		System.out.println("Mensagem: " +contato.getMensagem());
-		System.out.println("Date: " +contato.getData());
-		
+		System.out.println(contato.getData());
+
 	}
 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(name = "email", nullable = false)
 	private String email;
 	@Column(name = "mensagem", nullable = false)
 	private String mensagem;
-	@Column(name = "data", nullable = false)
-	private Date data;
-	private DateFormatter dataFormata;
+	@Column(name = "date", nullable = false )
+	private String data;
+
 
 	public Long getId() {
 		return id;
@@ -65,20 +53,15 @@ public class ContatoModel {
 		this.mensagem = mensagem;
 	}
 
-	public Date getData() {
+	public String getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
-		this.data = data;
+	public void setData(String data) {
+		SimpleDateFormat formataData = new SimpleDateFormat("dd/MM/YYYY");
+		Date dataAtual = new Date();
+		this.data = formataData.format(dataAtual);
 	}
 
-	public DateFormatter getDataFormata() {
-		return dataFormata;
-	}
-
-	public void setDataFormata(DateFormatter dataFormata) {
-		this.dataFormata = dataFormata;
-	}
 
 }
