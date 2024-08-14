@@ -1,6 +1,10 @@
 package com.mercado.mercado.controller;
 
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,16 +27,28 @@ public class ContatoController{
 	
 	@PostMapping("/enviar")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<ContatoModel> enviarFormulario(@RequestBody ContatoModel contatos){
+	public ResponseEntity<ContatoModel> enviarFormulario(@RequestBody  ContatoModel contatos){
 		contatoRepository.save(contatos);
 		return new ResponseEntity<ContatoModel>(HttpStatus.OK);
 	}
 	
-	@GetMapping("/{name}")
+	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public String teste(@PathVariable String name) {
+	public ResponseEntity<ContatoModel> consultarContato(@PathVariable int id){
+		Optional<ContatoModel> contato = contatoRepository.findById((long) id);
+		if(contato.isPresent()) {
+			return new ResponseEntity<>(contato.get(), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<ContatoModel>(HttpStatus.NOT_FOUND);
+		}
+		
+	}
 	
-		return name;
+	@GetMapping("/consulta/allContatos")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<List<ContatoModel>>consultaContatos(){
+		List<ContatoModel> contatos = contatoRepository.findAll();
+		return new ResponseEntity<>(contatos, HttpStatus.OK);
 	}
 	
 }
